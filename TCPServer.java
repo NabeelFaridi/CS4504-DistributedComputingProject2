@@ -46,27 +46,33 @@ public class TCPServer {
 
                 // Receive two matrices from the client
                 int[][] matrixA = (int[][]) in.readObject();
-                System.out.println("Received first matrix from client.");
+                System.out.println("SERVER: Received first matrix from client.");
                 int[][] matrixB = (int[][]) in.readObject();
-                System.out.println("Received second matrix from client.");
+                System.out.println("SERVER: Received second matrix from client.");
 
                 // Perform matrix multiplication with metrics
-                System.out.println("Starting matrix multiplication with metrics...");
+                System.out.println("SERVER: Starting matrix multiplication with metrics...");
                 StrassenMatrixMultiplierWithMetrics multiplier = new StrassenMatrixMultiplierWithMetrics();
-                int[][] resultMatrix = multiplier.multiplyWithMetrics(matrixA, matrixB);
-                System.out.println("Matrix multiplication completed with metrics.");
+                int[][] resultMatrix = new int[matrixA.length][matrixA.length];
+                if(matrixA[0].length < 1024){
+                    resultMatrix = multiplier.multiplyWithMetrics(matrixA, matrixB);
+                }
+                else{
+                    resultMatrix = multiplier.sequentialMultiply(matrixA, matrixB);
+                }
+                System.out.println("SERVER: Matrix multiplication completed with metrics.");
 
                 // Send the result back to the client
                 out.writeObject(resultMatrix);
                 out.flush();
-                System.out.println("Result matrix sent back to client.");
+                System.out.println("SERVER: Result matrix sent back to client.");
 
             } catch (IOException e) {
-                System.err.println("Error handling client I/O: " + e.getMessage());
+                System.err.println("SERVER: Error handling client I/O: " + e.getMessage());
             } catch (ClassNotFoundException e) {
-                System.err.println("Error handling client data: " + e.getMessage());
+                System.err.println("SERVER: Error handling client data: " + e.getMessage());
             } catch (Exception e) {
-                System.err.println("Error during matrix multiplication: " + e.getMessage());
+                System.err.println("SERVER: Error during matrix multiplication: " + e.getMessage());
             } finally {
                 try {
                     clientSocket.close();

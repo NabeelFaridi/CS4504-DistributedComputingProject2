@@ -32,27 +32,28 @@ public class TCPClient {
             // Send the first matrix
             out.writeObject(matrixA);
             out.flush();
-            System.out.println("First matrix sent to the server.");
+            System.out.println("CLIENT: First matrix sent to the server.");
 
             // Send the second matrix
             out.writeObject(matrixB);
             out.flush();
-            System.out.println("Second matrix sent to the server.");
+            System.out.println("CLIENT: Second matrix sent to the server.");
 
             // Receive the result matrix from the server
             int[][] resultMatrix = (int[][]) in.readObject();
-            System.out.println("Result matrix received from the server:");
+            System.out.println("CLIENT: Result matrix received from the server:");
 
             // Print the result matrix for verification
             printMatrix(resultMatrix);
 
         } catch (Exception e) {
-            System.err.println("Error communicating with the server: " + e.getMessage());
+            System.err.println("CLIENT: Error communicating with the server: " + e.getMessage());
         }
     }
 
     // Helper method to print the matrix
     private void printMatrix(int[][] matrix) {
+        System.out.println("CLIENT");
         for (int[] row : matrix) {
             for (int value : row) {
                 System.out.print(value + " ");
@@ -64,8 +65,9 @@ public class TCPClient {
     // Main method for testing the client setup
     public static void main(String[] args) {
         TCPClient client = new TCPClient();
-        int[][] matrixA = client.generateMatrix(1024); // Generate first 1K x 1K matrix
-        int[][] matrixB = client.generateMatrix(1024); // Generate second 1K x 1K matrix
+        int size = 128;
+        int[][] matrixA = TCPClient.generateMatrix(size); // Generate first 1K x 1K matrix
+        int[][] matrixB = TCPClient.generateMatrix(size); // Generate second 1K x 1K matrix
         client.sendMatricesAndReceiveResult(matrixA, matrixB);
     }
 }

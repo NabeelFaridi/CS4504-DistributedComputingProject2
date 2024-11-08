@@ -16,7 +16,7 @@ public class StrassenMatrixMultiplierWithMetrics {
 
         // Measure sequential execution time
         long startTimeSequential = System.nanoTime();
-        int[][] sequentialResult = sequentialMultiply(A, B);
+        sequentialMultiply(A, B);
         long endTimeSequential = System.nanoTime();
         sequentialExecutionTime = (endTimeSequential - startTimeSequential) / 1e6; // in milliseconds
 
@@ -38,7 +38,7 @@ public class StrassenMatrixMultiplierWithMetrics {
         System.out.println("Efficiency: " + efficiency);
     }
 
-    private int[][] parallelMultiply(int[][] A, int[][] B) throws Exception {
+    public int[][] parallelMultiply(int[][] A, int[][] B) throws Exception {
         return multiply(A, B);
     }
 
@@ -102,7 +102,7 @@ public class StrassenMatrixMultiplierWithMetrics {
         return C;
     }
 
-    private int[][] sequentialMultiply(int[][] A, int[][] B) {
+    public int[][] sequentialMultiply(int[][] A, int[][] B) {
         int n = A.length;
         int[][] C = new int[n][n];
         for (int i = 0; i < n; i++) {
