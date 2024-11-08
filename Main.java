@@ -16,6 +16,26 @@ public class Main {
     };
 
     public static void main(String[] args) throws IOException {
+        Thread serverThread = new Thread(() ->{
+            try{
+                TCPServer.main(args);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        });
+        serverThread.start();
+        Thread clientThread = new Thread(() -> {
+            try {
+                TCPClient.main(args);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        clientThread.start();
+    }
+
+    @SuppressWarnings("unused")
+    private static void part1(String[] args){
         // Start the router
         Thread routerThread = new Thread(() -> {
             try {
@@ -23,7 +43,7 @@ public class Main {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        });
+        });        
 
         routerThread.start();
 

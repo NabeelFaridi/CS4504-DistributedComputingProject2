@@ -1,6 +1,5 @@
 import java.io.*;
 import java.net.*;
-import java.lang.Exception;
 
 public class SThread extends Thread {
 	private Object[][] RTable; // routing table
@@ -8,7 +7,6 @@ public class SThread extends Thread {
 	private BufferedReader in ; // reader (for reading from the machine connected to)
 	private String inputLine, outputLine, destination, addr; // communication strings
 	private Socket outSocket; // socket for communicating with a destination
-	private int ind; // indext in the routing table
 
 	// Constructor
 	SThread(Object[][] Table, Socket toClient, int index, int port) throws IOException {
@@ -18,7 +16,6 @@ public class SThread extends Thread {
 		addr = toClient.getInetAddress().getHostAddress();
 		RTable[index][0] = addr + ":" + port; // IP addresses
 		RTable[index][1] = toClient; // sockets for communication
-		ind = index;
 	}
 
 	// Run method (will run for each machine that connects to the ServerRouter)
@@ -31,7 +28,8 @@ public class SThread extends Thread {
 
 			// waits 10 seconds to let the routing table fill with all machines' information
 			try {
-				Thread.currentThread().sleep(5000);
+				Thread.currentThread();
+				Thread.sleep(5000);
 			} catch (InterruptedException ie) {
 				System.out.println("Thread interrupted");
 			}
